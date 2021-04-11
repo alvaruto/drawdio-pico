@@ -1,6 +1,6 @@
 /******************************
- * main.c
- * rev 1.0 Jan 2021 shabaz
+ * Drawdio for Raspberry Pi Pico
+ * April 2021 ~aml
  * ****************************/
 
 #include "pico/stdlib.h"
@@ -37,12 +37,8 @@ int main(void)
         result = adc_read();
         voltage = result * conversion_factor;
 
-        if(result < 1862){
-            //Below 1.5V, output is 0
-            level = 0;
-        }
-        else if(result > 3223){
-            //From 3V, output is 0
+        if((result < 1862) || (result > 3223)){
+            //Below 1.5V or greater than 3V, output is 0
             level = 0;
         }
         else{
@@ -50,7 +46,6 @@ int main(void)
             level = voltage*170 - 255; 
         }
         pwm_set_gpio_level(buzzer,level);
-        printf("%f\n",voltage);
     }
 
 }
